@@ -21,6 +21,11 @@ An app to start art challenges or take part in existing ones, improve your art s
 ## Resources Page
 <img src="/images/resources.png" width="75%">
 
+## To Run
+npm install<br/>
+npm run dev
+
+
 ## Need to work on
 * delete route
 * open images for full view
