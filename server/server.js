@@ -8,7 +8,6 @@ const MongoStore = require('connect-mongo')(session)
 const passport = require('./passport');
 const fileUpload = require('express-fileupload');
 const app = express()
-const PORT = 8080
 // Route requires
 const user = require('./routes/user')
 const postsRouter = require('./routes/posts')
@@ -193,6 +192,11 @@ app.post('/bio', (req,res) => {
 })
 
 
+
+const PORT = process.env.PORT;
+if (port == null || port == "") {
+	port = 8080
+}
 
 // Starting Server
 app.listen(PORT, () => {
