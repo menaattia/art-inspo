@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import axios from 'axios'
 import PostCard from "../components/Card"
+import Resource from "../components/Resource"
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
@@ -63,8 +64,9 @@ export default function UserTab(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const [challenges, setChallenges] = React.useState({challenges: []})
+  const [resources, setResources] = React.useState({resources: []})
   const [posts, setPosts] = React.useState({posts: []});
+  const [photos, setPhotos] = React.useState({photos: []});
 
 
   React.useEffect(() => {
@@ -78,13 +80,21 @@ export default function UserTab(props) {
       console.log(error);
     })
 
-    // axios.get("/challenges")
-    // .then(response => {
-    //   setChallenges({challenges: response.data})
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // })
+    axios.get("/resources/"+props.user)
+    .then(response => {
+      setResources({resources: response.data})
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+    axios.get("/photos/"+props.user)
+    .then(response => {
+      setPhotos({photos: response.data})
+    })
+    .catch(error => {
+      console.log(error);
+    })
 
   }, [])
 
@@ -141,9 +151,9 @@ export default function UserTab(props) {
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
         <Grid container spacing={1}>
-          {posts.posts.map(post => {
+          {photos.photos.map(photo => {
             return <Grid item xs={6} sm={4} spacing={3}>
-            <PostCard img={post.img} user={post.user} title={post.title} content={post.content} date={post.createdAt}/>
+            <PostCard img={photo.img} user={photo.user} title={photo.title} date={photo.createdAt}/>
           </Grid>
           }) }
 
@@ -151,9 +161,9 @@ export default function UserTab(props) {
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
         <Grid container spacing={1}>
-          {posts.posts.map(post => {
+          {resources.resources.map(resource => {
             return <Grid item xs={6} sm={4} spacing={3}>
-            <PostCard img={post.img} user={post.user} title={post.title} content={post.content} date={post.createdAt}/>
+            <Resource user={resource.user} title={resource.title} content={resource.content} date={resource.createdAt}/>
           </Grid>
           }) }
 

@@ -120,6 +120,7 @@ export default function ButtonBases() {
           focusVisibleClassName={classes.focusVisible}
           style={{
             width: image.width,
+            height: '22vh',
             marginTop: image.marginTop,
             marginLeft: image.marginLeft,
             marginRight: image.marginRight

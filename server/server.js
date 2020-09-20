@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
@@ -14,8 +15,12 @@ const postsRouter = require('./routes/posts')
 const challengesRouter = require('./routes/challenges')
 const categoriesRouter = require('./routes/categories')
 const resourcesRouter = require('./routes/resources')
+const themesRouter = require('./routes/themes')
+const photosRouter = require('./routes/photos')
 const post = require('./database/models/post')
+const photo = require('./database/models/photo')
 const challenge = require('./database/models/challenge')
+const theme = require('./database/models/theme')
 const User = require('./database/models/user')
 
 
@@ -54,7 +59,9 @@ app.use('/user', user)
 app.use('/posts', postsRouter)
 app.use('/challenges', challengesRouter)
 app.use('/categories', categoriesRouter)
+app.use('/themes', themesRouter)
 app.use('/resources', resourcesRouter)
+app.use('/photos', photosRouter)
 
 app.post('/posts', (req,res) => {
 	const img = req.files.img
@@ -114,6 +121,76 @@ console.log(newPost);
 
 })
 
+app.post('/photos', (req,res) => {
+	const img = req.files.img
+	img.mv('./server/uploads/' + img.name)
+
+	const newPhoto = new photo.Photo({
+	        user: req.body.user,
+	        title: req.body.title,
+	        img: 'uploads/' +img.name
+	    })
+
+
+	newPhoto.save(function(err, savedPhoto, numAffected) {
+			if (savedPhoto) {
+				console.log('saved');
+
+					User.findOneAndUpdate({username: newPhoto.user}, {$push: {photos: newPhoto}}, function (error, success) {
+							if (error) {
+									console.log(error);
+									res.status(400).json('Error: ' + error)
+							} else {
+									console.log(success);
+									res.json('Photo added!')
+							}
+					});
+				}
+			})
+
+})
+
+app.post('/photos/themes', (req,res) => {
+	const img = req.files.img
+	console.log(img);
+	console.log(req.body);
+	img.mv('./server/uploads/' + img.name)
+
+	const newPhoto = new photo.Photo({
+	        user: req.body.user,
+	        title: req.body.title,
+	        img: 'uploads/' +img.name
+	    })
+
+console.log(newPhoto);
+
+	theme.Theme.findOneAndUpdate({name: req.body.theme},{$push: {photos: newPhoto}}, function (error, success) {
+	        if (error) {
+	            console.log(error);
+	            res.status(400).json('Error: ' + error)
+	        } else {
+	            console.log(success)
+	            res.json('Photo added to theme!')
+
+	        } })
+
+
+})
+
+app.post('/bio', (req,res) => {
+	const user= req.body.username
+	const bio= req.body.bio
+
+	User.findOneAndUpdate({username: user},{$set: {bio: bio}}, function (error, success) {
+		if (error) {
+			console.log(error);
+			res.status(400).json('Error: ' + error)
+		} else {
+			console.log(success)
+			res.json({data: bio, message:"bio updated!"})
+
+		} })
+})
 
 
 

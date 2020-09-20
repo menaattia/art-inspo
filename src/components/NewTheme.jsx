@@ -11,11 +11,11 @@ import axios from 'axios'
 
 
 
-export default function NewCategory(props) {
+export default function NewTheme(props) {
   // console.log('logged in', props.user.loggedIn);
   const loggedIn = props.user.loggedIn
   const [open, setOpen] = React.useState(false);
-  const [category, setCategory] = React.useState({name: '', description: ''})
+  const [theme, setTheme] = React.useState({name: '', description: ''})
 
   const handleClickOpen = () => {
     if(!loggedIn) {
@@ -31,24 +31,24 @@ export default function NewCategory(props) {
   };
 
   const handleChange = (prop) => (event) => {
-    setCategory({ ...category, [prop]: event.target.value });
+    setTheme({ ...theme, [prop]: event.target.value });
     };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-        const newCategory = {
+        const newTheme = {
           user: props.user.username,
-          name: category.name,
-          description: category.description
+          name: theme.name,
+          description: theme.description
         }
 
 
-        console.log('new category', newCategory);
+        console.log('new theme', newTheme);
 
-        axios.post("/categories", newCategory)
+        axios.post("/themes", newTheme)
         .then((response) => {
           console.log(response);
-          window.location = '/resources'
+          window.location = '/photos'
         }, (error) => {
           console.log(error);
         });
@@ -59,34 +59,34 @@ export default function NewCategory(props) {
   return (
 
     <div style={{height: "0px",
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}}>
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+  }}>
       <AddCircleIcon onClick={handleClickOpen}/>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Post a New Category</DialogTitle>
+        <DialogTitle id="form-dialog-title">Post a New Photo Theme</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To post a new art category, include a name for the category as well as a description.
+            To post a new photo theme, include a name for the theme as well as a description.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Category Name"
+            label="Theme Name"
             type="text"
             onChange={handleChange('name')}
-            value = {category.name}
+            value = {theme.name}
             fullWidth
           />
           <TextField
-            label="Category Description"
+            label="Theme Description"
             multiline
             rows={2}
             rowsMax={4}
             onChange={handleChange('description')}
-            value= {category.description}
+            value= {theme.description}
             fullWidth
             />
 

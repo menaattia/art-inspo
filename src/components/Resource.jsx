@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -65,11 +64,6 @@ export default function PostCard(props) {
         }
         title= {<Link style={{'color':'black', 'textDecoration': 'underline'}} to={'/users/'+props.user}>{props.user}</Link>}
         subheader={date.substring(5,7)+'/' +date.substring(8,10)+'/'+date.substring(0,4)}
-      />
-      <CardMedia
-        className={classes.media}
-        image={`http://localhost:8080/${props.img}`}
-        title= "watercolor"
       />
       <CardActions disableSpacing>
        

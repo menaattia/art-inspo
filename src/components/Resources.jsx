@@ -12,7 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
-
+import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -20,6 +20,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PostCard from "../components/Card"
 import NewCategory from "../components/NewCategory"
 import NewResource from "../components/NewResource"
+import Resource from "../components/Resource"
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
@@ -147,11 +148,12 @@ function ResourcesDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Art Resources
+            <Link style={{ textDecoration: 'none', color: 'white' }} to="/"> <HomeIcon /></Link>
           </Typography>
           <Typography variant="h6" noWrap>
-            <Link style={{ textDecoration: 'none', color: 'white' }} to="/"> | Art Inspo</Link>
+          &nbsp; Art Resources
           </Typography>
+          
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
@@ -187,7 +189,7 @@ function ResourcesDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-          <h1>{category.name} { category.name !== '' ? <NewResource user={props.user} challenge={category.name}/>: null}</h1>
+          <h1>{category.name} { category.name !== '' ? <NewResource user={props.user} category={category.name}/>: null}</h1>
 
         <Typography style={{paddingBottom:"2%"}}>
         {category.description}
@@ -196,7 +198,7 @@ function ResourcesDrawer(props) {
         <Grid container spacing={1}>
           {posts.posts? posts.posts.map(post => {
             return <Grid item xs={6} sm={4} spacing={3}>
-            <PostCard img={post.img} user={post.user} title={post.title} content={post.content} date={post.createdAt}/>
+            <Resource user={post.user} title={post.title} content={post.content} date={post.createdAt}/>
           </Grid>
           }) : null}
 

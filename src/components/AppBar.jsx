@@ -215,10 +215,10 @@ export default function PrimarySearchAppBar(props) {
             />
           </div>
           {console.log('loggedin',loggedIn)}
-          {loggedIn? <IconButton onClick={logout}>Logout</IconButton> : null}
+          
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-
+          {loggedIn && <IconButton onClick={logout}><Typography style={{color: "white"}} className={classes.title} variant="h6" noWrap>Log out </Typography></IconButton>}
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -234,6 +234,7 @@ export default function PrimarySearchAppBar(props) {
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
+          {loggedIn && <IconButton onClick={logout}><Typography style={{color: "white"}} className={classes.title} variant="h6" noWrap>Log out </Typography></IconButton>}
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}

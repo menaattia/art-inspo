@@ -1,10 +1,11 @@
+require('dotenv').config()
 //Connect to Mongo database
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
 //your local database url
 //27017 is the default mongoDB port
-const uri = 'mongodb://localhost:27017/userDB'
+const uri = "mongodb+srv://mena_attia:Firstwebsite123@artinspo.c70dp.mongodb.net/artInspo"
 
 mongoose.connect(uri).then(
     () => {

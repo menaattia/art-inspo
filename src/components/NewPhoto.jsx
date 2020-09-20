@@ -11,7 +11,7 @@ import Input from '@material-ui/core/Input'
 import axios from 'axios'
 
 
-export default function NewPost(props) {
+export default function NewPhoto(props) {
   const loggedIn = props.user.loggedIn
     const [open, setOpen] = React.useState(false);
 
@@ -30,55 +30,57 @@ export default function NewPost(props) {
 
 
     const [values, setValues] = React.useState({
-        title: '',
-        content: ''
+        title: ''
 
       });
 
+    const [file, setFile] = React.useState(null);
 
     const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
     };
 
+    function handleFile(event) {
+        // console.log(event.target.files[0]);
+        setFile(event.target.files[0]);
+    }
 
     function submitForm(event) {
         event.preventDefault();
-        const resource = {
+        const photo = {
           user: props.user.username,
           title: values.title,
-          content: values.content
+          img: file
         }
 
         let formData = new FormData();
 
         formData.append('user', props.user.username);
         formData.append('title', values.title);
-        formData.append('content', values.content);
-
+        formData.append('img', file);
 
 
         // console.log(post);
 
-        axios.post("/resources", formData, {
+        axios.post("/photos", formData, {
             headers: {
              'content-type': 'multipart/form-data'
             }})
         .then((response) => {
           console.log(response);
-          window.location = '/resources'
         }, (error) => {
           console.log(error);
         });
-        
-        formData.append('category', props.category);
-        
-        axios.post("/categories/post", formData, {
+
+        formData.append('theme', props.theme);
+
+        axios.post("/photos/themes", formData, {
             headers: {
              'content-type': 'multipart/form-data'
             }})
         .then((response) => {
           console.log(response);
-          window.location = '/resources'
+          window.location = '/photos'
         }, (error) => {
           console.log(error);
         });
@@ -89,11 +91,12 @@ export default function NewPost(props) {
     <div>
       <AddCircleIcon onClick={handleClickOpen}/>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Post Resource</DialogTitle>
+        <DialogTitle id="form-dialog-title">Post a Reference Photo</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To post resource, include a title and content.
+            To post a reference photo, upload file as jpeg or png. Include a title.
           </DialogContentText>
+            <Input name='img' type="file" onChange={handleFile} fullWidth></Input>
           <TextField
             required
             autoFocus
@@ -104,17 +107,6 @@ export default function NewPost(props) {
             value = {values.title}
             fullWidth
           />
-          <TextField
-            required
-            label="Content"
-            multiline
-            margin="dense"
-            rows={2}
-            rowsMax={4}
-            onChange={handleChange('content')}
-            value= {values.content}
-            fullWidth
-            />
 
         </DialogContent>
         <DialogActions>

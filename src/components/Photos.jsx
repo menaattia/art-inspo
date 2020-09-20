@@ -12,14 +12,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
-
+import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PostCard from "../components/Card"
-import FormDialogue from "../components/FormDialogue"
-import NewPost from "../components/NewPost"
+import NewTheme from "./NewTheme"
+import NewPhoto from "../components/NewPhoto"
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
@@ -67,23 +67,23 @@ function PhotosDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [challenge, setChallenge] = React.useState({name: '', description: ''})
-  const [challenges, setChallenges] = React.useState({challenges: []})
+  const [photo_theme, setTheme] = React.useState({name: '', description: ''})
+  const [themes, setThemes] = React.useState({themes: []})
+  const [photos, setPhotos] = React.useState({photos: []});
 
-  const [posts, setPosts] = React.useState({posts: []});
   React.useEffect(() => {
-    axios.get("/posts")
+    axios.get("/photos")
     .then(response => {
-      setPosts({posts: response.data})
+      setPhotos({photos: response.data})
     })
     .catch(error => {
       console.log(error);
     })
 
-    axios.get("/challenges")
+    axios.get("/themes")
     .then(response => {
       console.log(response.data);
-      setChallenges({challenges: response.data})
+      setThemes({themes: response.data})
     })
     .catch(error => {
       console.log(error);
@@ -96,14 +96,14 @@ function PhotosDrawer(props) {
     console.log(event.target);
     console.log(event.target.innerText);
 
-    const url = "/challenges/" + name
+    const url = "/themes/" + name
 
     await axios.get(url)
     .then(response => {
-      setChallenge({ name:name, description: response.data.description })
-      console.log(response.data.posts);
-      console.log(challenge);
-      setPosts({posts: response.data.posts})
+      setTheme({ name:name, description: response.data.description })
+      console.log(response.data.photos);
+      console.log(theme);
+      setPhotos({photos: response.data.photos})
     })
     .catch(error => {
       console.log(error);
@@ -117,13 +117,13 @@ function PhotosDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      <FormDialogue user={props.user}/>
+      <NewTheme user={props.user}/>
       <Divider />
       <List>
       {/* ['Celebrity Portrait', 'Fall painting', 'Winter Painting', 'Pointilism Portrait'] */}
-        {challenges.challenges? challenges.challenges.map((challenge, index) => (
+        {themes.themes? themes.themes.map((theme, index) => (
           <ListItem button key={index}>
-            <button style={{textAlign:"left",width: "100%", backgroundColor:'#ffffff', border:'none', outline:'none'}} onClick={handleClick('name')} primary={challenge.name}>{challenge.name}</button>
+            <button style={{textAlign:"left",width: "100%", backgroundColor:'#ffffff', border:'none', outline:'none'}} onClick={handleClick('name')} primary={theme.name}>{theme.name}</button>
           </ListItem>
         )): null}
       </List>
@@ -147,11 +147,12 @@ function PhotosDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Photo Inspo
+            <Link style={{ textDecoration: 'none', color: 'white' }} to="/"> <HomeIcon /></Link>
           </Typography>
           <Typography variant="h6" noWrap>
-            <Link style={{ textDecoration: 'none', color: 'white' }} to="/"> | Art Inspo</Link>
+          &ensp; Photo Inspo
           </Typography>
+          
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
@@ -187,16 +188,16 @@ function PhotosDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-          <h1>{challenge.name} { challenge.name !== '' ? <NewPost user={props.user} challenge={challenge.name}/>: null}</h1>
+          <h1>{photo_theme.name} { photo_theme.name !== '' ? <NewPhoto user={props.user} theme={photo_theme.name}/>: null}</h1>
 
         <Typography style={{paddingBottom:"2%"}}>
-        {challenge.description}
+        {theme.description}
         </Typography>
 
         <Grid container spacing={1}>
-          {posts.posts? posts.posts.map(post => {
+          {photos.photos? photos.photos.map(photo => {
             return <Grid item xs={6} sm={4} spacing={3}>
-            <PostCard img={post.img} user={post.user} title={post.title} content={post.content} date={post.createdAt}/>
+            <PostCard img={photo.img} user={photo.user} title={photo.title}  date={photo.createdAt}/>
           </Grid>
           }) : null}
 

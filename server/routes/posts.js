@@ -1,37 +1,37 @@
 const router = require('express').Router();
-const User = require('../database/models/user')
+// const User = require('../database/models/user')
 const post = require('../database/models/post')
-const challenge = require('../database/models/challenge')
-const passport = require('passport')
+// const challenge = require('../database/models/challenge')
+// const passport = require('passport')
 require('mongoose').set('debug', true)
 
-const fs = require('fs');
-const path = require('path');
-const multer = require('multer');
+// const fs = require('fs');
+// const path = require('path');
+// const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads')
-    },
-    filename: (req, file, cb) => {
-        // cb(null, file.fieldname + '-' + Date.now())
-        cb(null, file.originalname)
-    }
-});
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'uploads')
+//     },
+//     filename: (req, file, cb) => {
+//         // cb(null, file.fieldname + '-' + Date.now())
+//         cb(null, file.originalname)
+//     }
+// });
 
-const fileFilter = (req,file, cb) => {
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
+// const fileFilter = (req,file, cb) => {
+//     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
 
 
-}
+// }
 
-var upload = multer({ storage: storage, limits: {
-    fileFilter: fileFilter
-}});
+// var upload = multer({ storage: storage, limits: {
+//     fileFilter: fileFilter
+// }});
 
 
 

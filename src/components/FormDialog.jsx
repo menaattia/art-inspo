@@ -11,11 +11,11 @@ import axios from 'axios'
 
 
 
-export default function NewCategory(props) {
+export default function FormDialog(props) {
   // console.log('logged in', props.user.loggedIn);
   const loggedIn = props.user.loggedIn
   const [open, setOpen] = React.useState(false);
-  const [category, setCategory] = React.useState({name: '', description: ''})
+  const [challenge, setChallenge] = React.useState({name: '', description: ''})
 
   const handleClickOpen = () => {
     if(!loggedIn) {
@@ -31,24 +31,24 @@ export default function NewCategory(props) {
   };
 
   const handleChange = (prop) => (event) => {
-    setCategory({ ...category, [prop]: event.target.value });
+    setChallenge({ ...challenge, [prop]: event.target.value });
     };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-        const newCategory = {
+        const newChallenge = {
           user: props.user.username,
-          name: category.name,
-          description: category.description
+          name: challenge.name,
+          description: challenge.description
         }
 
 
-        console.log('new category', newCategory);
+        console.log('new challenge', newChallenge);
 
-        axios.post("/categories", newCategory)
+        axios.post("/challenges", newChallenge)
         .then((response) => {
           console.log(response);
-          window.location = '/resources'
+          window.location = '/challenges'
         }, (error) => {
           console.log(error);
         });
@@ -59,34 +59,34 @@ export default function NewCategory(props) {
   return (
 
     <div style={{height: "0px",
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}}>
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+  }}>
       <AddCircleIcon onClick={handleClickOpen}/>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Post a New Category</DialogTitle>
+        <DialogTitle id="form-dialog-title">Post a New Challenge</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To post a new art category, include a name for the category as well as a description.
+            To post a new art challenge, include a name for the challenge as well as a description.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Category Name"
+            label="Challenge Name"
             type="text"
             onChange={handleChange('name')}
-            value = {category.name}
+            value = {challenge.name}
             fullWidth
           />
           <TextField
-            label="Category Description"
+            label="Challenge Description"
             multiline
             rows={2}
             rowsMax={4}
             onChange={handleChange('description')}
-            value= {category.description}
+            value= {challenge.description}
             fullWidth
             />
 

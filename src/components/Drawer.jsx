@@ -12,13 +12,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
-
+import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PostCard from "../components/Card"
-import FormDialogue from "../components/FormDialogue"
+import FormDialogue from "./FormDialog"
 import NewPost from "../components/NewPost"
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios'
@@ -147,11 +147,12 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            <Link style={{ textDecoration: 'none', color: 'white' }} to="/challenges">Art Challenges</Link>
+            <Link style={{ textDecoration: 'none', color: 'white' }} to="/"> <HomeIcon /></Link>
           </Typography>
           <Typography variant="h6" noWrap>
-            <Link style={{ textDecoration: 'none', color: 'white' }} to="/"> | Art Inspo</Link>
+            <Link style={{ textDecoration: 'none', color: 'white' }} to="/challenges">&ensp; Art Challenges</Link>
           </Typography>
+          
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
@@ -187,11 +188,13 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-          <h1>{challenge.name} { challenge.name !== '' ? <NewPost user={props.user} challenge={challenge.name}/>: null}</h1>
-
+          <Typography variant="h4">
+            {challenge.name} 
+          </Typography>
         <Typography style={{paddingBottom:"2%"}}>
         {challenge.description}
         </Typography>
+        { challenge.name !== '' ? <NewPost user={props.user} challenge={challenge.name}/>: null}
 
         <Grid container spacing={1}>
           {posts.posts? posts.posts.map(post => {

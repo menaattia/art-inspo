@@ -35,4 +35,11 @@ router.route('/').get((req,res) => {
 
 })
 
+
+router.route('/:user').get((req,res)=> {
+  resource.Resource.find({user: req.params.user})
+  .then(resources => res.json(resources))
+  .catch(err => res.status(400).json('Error: ' + err));
+})
+
 module.exports = router;

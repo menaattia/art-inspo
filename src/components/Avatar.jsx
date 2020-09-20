@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     large: {
       width: theme.spacing(15),
       height: theme.spacing(15),
+     
     },
   }));
 
@@ -26,7 +28,9 @@ export default function LetterAvatars(props) {
   return (
     <div className={classes.root}>
       <Avatar className={classes.large}>
+      <Typography fontSize="100px">
       {props.user != null ? props.user.substring(0,1).toUpperCase(): props.user}
+      </Typography>
       
       </Avatar>
     </div>

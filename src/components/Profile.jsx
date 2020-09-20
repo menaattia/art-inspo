@@ -6,6 +6,8 @@ import Avatar from '../components/Avatar'
 import NewPost from '../components/NewPost'
 import Typography from '@material-ui/core/Typography';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
+import axios from 'axios'
+import EditBio from './EditBio';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,13 +22,33 @@ const useStyles = makeStyles((theme) => ({
     },
     cover: {
         width: 151,
-      }
+      },
+    align: {
+      display: 'flex',
+      flexDirection: 'row',
+
+    }
 }));
 
 
 export default function Profile(props) {
     const classes = useStyles();
     const theme = useTheme();
+    const [bio, setBio] = React.useState('');
+
+    React.useEffect(() => {
+
+      axios.get('/user/'+props.username)
+      .then(response => {
+        setBio(response.data.bio)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+    }, [])
+
+
 
     return (
       <Card className={classes.root}>
@@ -35,18 +57,24 @@ export default function Profile(props) {
             <Avatar user={props.username}/>
           </CardContent>
           </div>
-          <div className={classes.content}>
+          <div style={{marginLeft: "3%"}} className={classes.details}>
+          <div className={classes.details}>
           <CardContent>
           <Typography component="h5" variant="h5">
             {props.username}
           </Typography>
           </CardContent>
-          </div>
-          <div className={classes.details}>
           <CardContent>
-              <Typography>Insert bio here</Typography>
+              <Typography style={{whiteSpace: 'pre-wrap'}} >{bio} </Typography>
           </CardContent>
-
-          {props.status? <NewPost user={props.user}/> : null}
+          </div>
+          <div className={classes.align}>
+          {props.status? <CardContent>
+              <EditBio user={props.user} bio={bio}/>
+          </CardContent> : null}
+          {props.status?<CardContent> <NewPost user={props.user}/></CardContent> : null}
+          </div>
+          
+          
           </div>
       </Card> ) }

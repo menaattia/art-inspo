@@ -62,7 +62,7 @@ router.get('/:username', (req, res, next) => {
           console.log('User.js post error: ', err)
           res.status(400).json('Error: ' + err)
       } else if (user) {
-          res.status(200).json('user found')
+          res.status(200).json({username: user.username, bio: user.bio})
       }
       if(!user) {
         res.status(400).json('no user found')

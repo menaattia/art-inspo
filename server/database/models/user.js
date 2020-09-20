@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs');
 const post = require('../models/post')
 const resource = require('../models/resource')
+const photo = require('../models/photo')
 mongoose.promise = Promise
 
 // Define userSchema
@@ -10,8 +11,10 @@ const userSchema = new Schema({
 
 	username: { type: String, unique: false, required: false },
 	password: { type: String, unique: false, required: false },
+	bio: { type: String, unique: false, required: false },
 	posts: [post.postSchema],
 	resources: [resource.resourceSchema],
+	photos: [photo.photoSchema],
 	createdAt: {type: Date, default: Date.now}
 
 })

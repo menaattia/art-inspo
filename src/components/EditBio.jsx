@@ -6,16 +6,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Typography from '@material-ui/core/Typography';
 import axios from 'axios'
 
 
 
-export default function FormDialog(props) {
+export default function EditBio(props) {
   // console.log('logged in', props.user.loggedIn);
   const loggedIn = props.user.loggedIn
   const [open, setOpen] = React.useState(false);
-  const [challenge, setChallenge] = React.useState({name: '', description: ''})
+  const [bio, setBio] = React.useState()
 
   const handleClickOpen = () => {
     if(!loggedIn) {
@@ -30,25 +30,22 @@ export default function FormDialog(props) {
     setOpen(false);
   };
 
-  const handleChange = (prop) => (event) => {
-    setChallenge({ ...challenge, [prop]: event.target.value });
+  const handleChange = (event) => {
+    setBio(event.target.value );
     };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-        const newChallenge = {
-          user: props.user.username,
-          name: challenge.name,
-          description: challenge.description
-        }
+    const user = {
+        username: props.user.username,
+        bio: bio
+    }
 
-
-        console.log('new challenge', newChallenge);
-
-        axios.post("/challenges", newChallenge)
+        axios.post("/bio", user)
         .then((response) => {
           console.log(response);
-          window.location = '/challenges'
+          setBio(response.data.bio)
+          window.location = '/users/'+props.user.username
         }, (error) => {
           console.log(error);
         });
@@ -58,33 +55,34 @@ export default function FormDialog(props) {
 
   return (
 
-    <div>
-      <AddCircleIcon onClick={handleClickOpen}/>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Post a New Challenge</DialogTitle>
+    <div >
+      <button onClick={handleClickOpen}><Typography>Edit Bio</Typography></button>
+      <Dialog fullWidth={true}  open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Edit Bio</DialogTitle>
         <DialogContent>
+        <DialogContentText>
+            Your current bio is: 
+          </DialogContentText>
+          <DialogContentText style={{whiteSpace: 'pre-wrap'}} >
+            {props.bio}
+          </DialogContentText>
+
           <DialogContentText>
-            To post a new art challenge, include a name for the challenge as well as a description.
+            Type your new bio in the textbox below.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Challenge Name"
-            type="text"
-            onChange={handleChange('name')}
-            value = {challenge.name}
-            fullWidth
-          />
-          <TextField
-            label="Challenge Description"
             multiline
+            id="name"
+            label="Update Bio"
+            type="text"
             rows={2}
             rowsMax={4}
-            onChange={handleChange('description')}
-            value= {challenge.description}
+            onChange={handleChange}
+            value = {bio}
             fullWidth
-            />
+          />
 
         </DialogContent>
         <DialogActions>
@@ -92,7 +90,7 @@ export default function FormDialog(props) {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Post
+            Update
           </Button>
         </DialogActions>
       </Dialog>
