@@ -193,9 +193,9 @@ app.post('/bio', (req,res) => {
 
 
 
-const PORT = process.env.PORT;
-if (port == null || port == "") {
-	port = 8080
+let PORT = process.env.PORT;
+if (PORT == null || PORT == "") {
+	PORT = 8080
 }
 
 // Starting Server

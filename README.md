@@ -1,7 +1,6 @@
-## mern user authentication
+## Art Inspo App
 
-couldn't find a simple boilerplate that works & uses sessions and react hooks, so i made my own
+An app to start art challenges or take part in existing ones, improve your art skills with tips from the resources sestion and get inspiration or reference images from photos
 
 ## need to work on
-* redux
-* private routes
+* delete route
